@@ -1,0 +1,25 @@
+﻿@page "/majors"
+
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Test.Models
+@inject IDbContextFactory<Test.Data.ApplicationDbContext> DbFactory
+
+<PageTitle>Majors</PageTitle>
+
+<h1>Majors</h1>
+
+<p>
+    <a href="majors/create" class="btn btn-success">Create New Major</a>
+</p>
+
+<QuickGrid Class="table" Items="DbFactory.CreateDbContext().Majors.Include(m=>m.Department)">
+    <PropertyColumn Property="majors => majors.Name" />
+    <PropertyColumn Property="majors => majors.Department.Name" Title="Department Name" />
+
+    <TemplateColumn Context="majors">
+        <a class="btn btn-outline-success" href="@($"majors/edit?id={majors.Id}")">Edit</a>
+        <a class="btn btn-info" href="@($"majors/details?id={majors.Id}")">Details</a>
+        <a class="btn btn-danger" href="@($"majors/delete?id={majors.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
